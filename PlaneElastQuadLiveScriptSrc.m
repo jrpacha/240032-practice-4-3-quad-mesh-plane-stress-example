@@ -6,17 +6,17 @@
 % $1\, \mathrm{mm}$ right and $1\, \mathrm{mm}$ up from its 
 % lower left corner. The plate is clamped along the hole, 
 % whereas its right edge is under a constant traction force 
-% of $\tau = 5000\, \mathrm{N/mm}$. 
+% of $\tau = 5000\, \mathrm{N/mm}.$ 
 % 
 % <<placaAmbForatCrop.png>>
 %
 % Apply the FEM, using the mesh in |meshPlacaForatQuad.m| to 
 % compute the displacements of the nodes, the stress-strain and
 % the von Mises stress. Material properties: Young modulus
-% $E = 10^{6}\, \mathrm{N/mm}^{2}$, Poisson ratio
+% $E = 10^{7}\, \mathrm{N/mm}^{2}$, Poisson ratio
 % $\nu = 0.3$.
 %
-%See Toni Susin's Numerical Factory.
+% See Toni Susin's Numerical Factory,
 % <https://numfactory.upc.edu/web/FiniteElements/Pract/P10-PlaneElasticity/html/PlaneElasticityQuadMesh.html FEM course, practice 4.3>
 % 
 
@@ -41,7 +41,8 @@ numbering=0;
 plotElements(nodes, elem, numbering)
 hold on
 
-%%Select boundary points
+%%%
+% Select boundary points
 indRight=find(nodes(:,1)>4.99);
 indCirc=find(sqrt((nodes(:,1)-1.0e0).^2 + (nodes(:,2)-1.0e0).^2) < 0.51);
  
@@ -92,11 +93,13 @@ for e=1:numElem
     K(row,col)=K(row,col)+Ke;
 end
 
-%% Natural B.C.: constant traction  on the right edge
+%% Natural B.C.
+% constant traction  on the right edge
 nodLoads=indRight'; %nodes the traction is applied at
 Q=applyLoadsQuad(nodes,elem,nodLoads,Q,forceLoad);
 
-%% Essential B.C.: set displacements along the hole to zero
+%% Essential B.C.
+% set displacements along the hole to zero
 fixedNodes=[ndim*indCirc'-1; ndim*indCirc'];
 freeNodes=setdiff(1:ndim*numNod,fixedNodes);
 u=zeros(ndim*numNod,1); %initialize the solution to u=0
@@ -107,11 +110,12 @@ u(fixedNodes)=0.0;
 Km=K(freeNodes,freeNodes);
 Qm=Q(freeNodes);
 
-%solve the system
+%solve the reduced system
 um=Km\Qm;
 u(freeNodes)=um;
 
-%% Post process: displacements stress-strain and von Mises stress
+%% Post process 
+% Plot displacements stress-strain and von Mises stress
 scale=7;
 plotPlaneNodElemDespl(nodes, elem, u, scale);
 
@@ -130,7 +134,8 @@ titol='VonMises Stress';
 colorTable='jet';
 plotContourSolution(nodes,elem,valueToShow,titol,colorTable);
 
-%% Post process: tables with displacements and stress
+%% Post process
+% Write tables with displacements and stress
 format short e
 displTable=table((1:numNod)',nodes(:,1),nodes(:,2),...
                   u(1:2:end),u(2:2:end),...
