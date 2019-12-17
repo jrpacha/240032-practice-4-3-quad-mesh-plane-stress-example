@@ -1,11 +1,11 @@
 clearvars
 close all
 
-%Material properties
+%Data
 E=1.0e+7;                  %Young Modulus (N/mm^2)
 nu=0.3;                    %Poisson's ratio (adimensional)
 th=0.05;                   %thickness (mm)
-forceLoad=[5.0e+3; 0.0e0]; %(Fx,Fy) traction force (in mm)
+forceLoad=[5.0e+3; 0.0e0]; %(Fx,Fy) traction force (in n/mm)
 
 %Define the plane elasticity problem: 
 %modelProblem=1; %plane stress
@@ -18,12 +18,12 @@ eval('meshPlacaForatQuad');
 numElem=size(elem,1);
 numbering=0;
 plotElements(nodes, elem, numbering)
+hold on
 
-%Select Boundary points
+%%Select Boundary points
 indRight=find(nodes(:,1)>4.99);
 indCirc=find(sqrt((nodes(:,1)-1.0e0).^2 + (nodes(:,2)-1.0e0).^2) < 0.51);
-
-hold on 
+ 
 plot(nodes(indRight,1),nodes(indRight,2),'ok','lineWidth',1,...
     'markerFaceColor','green','markerSize',4)
 plot(nodes(indCirc,1),nodes(indCirc,2),'ok','lineWidth',1,...
@@ -66,12 +66,13 @@ for e=1:numElem
     K(row,col)=K(row,col)+Ke;
 end
 
-%Boundary Conditions
-%Natural B.C.
+%%Boundary Conditions
+% Natural B.C.: constant traction  on the right edge
 nodLoads=indRight'; %nodes the traction is applied at
 Q=applyLoadsQuad(nodes,elem,nodLoads,Q,forceLoad);
 
-%Essential B.C.
+%% Essential B.C.: 
+% set displacements along the hole to zero
 fixedNodes=[ndim*indCirc'-1; ndim*indCirc'];
 freeNodes=setdiff(1:ndim*numNod,fixedNodes);
 u=zeros(ndim*numNod,1); %initialize the solution to u=0
@@ -86,7 +87,7 @@ Qm=Q(freeNodes);
 um=Km\Qm;
 u(freeNodes)=um;
 
-%Post Process
+%%Post Process
 %Compute Strain and StressElement
 [stress,vonMisses]=computeQuadStrainStressVM(nodes, elem, u, C);
 
