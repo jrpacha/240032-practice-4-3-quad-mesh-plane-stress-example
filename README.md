@@ -1,7 +1,5 @@
 # 240032 Practice 4.3
 
-## Matlab session Tuesday 17-12-2019
-
 ### P4.3 - Quadrilateral mesh: Plane stress example 
 
 You can find the session's guide ---together with other extra material files---,
