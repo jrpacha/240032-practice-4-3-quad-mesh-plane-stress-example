@@ -1,6 +1,4 @@
 function plotPlaneNodElemDespl(nodes, elem, u, esc)
-%
-%(c) Numerical Factory 2019
 [num_nod, dim]=size(nodes);
 num_elem=size(elem,1);
 nodu=zeros(num_nod,dim);
@@ -12,8 +10,6 @@ ymin=min(nodu(:,2));
 xmax=max(nodu(:,1));
 xmin=min(nodu(:,1));
 figure()
-plotElements(nodes, elem, 0);
+plotElementsOld(nodes, elem, 0);
 hold on
-plotElements(nodu, elem, 0);
-
-
+plotElementsOld(nodu, elem, 0);

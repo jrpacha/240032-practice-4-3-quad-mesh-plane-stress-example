@@ -54,7 +54,7 @@ plot(nodes(indCirc,1),nodes(indCirc,2),'ok','lineWidth',1,...
     'markerEdgeColor','red')
 hold off
 
-%% Material properties
+%Material properties
 % * |modelProblem == 'srtess'|: plane stress problem (thickness must be specified)
 % * |modelProblem == 'strain'|: plane strain problem (thickness set to 1)
 
