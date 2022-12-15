@@ -1,4 +1,4 @@
-function [Q]=applyLoadsQuad(nodes,elem,nodLoads,Q, forceLoad)
+function [Q]=applyLoadsQuadOld(nodes,elem,nodLoads,Q, forceLoad)
 %
 % (c) Numerical Factory 2019
 %
