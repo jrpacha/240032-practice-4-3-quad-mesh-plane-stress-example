@@ -17,7 +17,7 @@ eval('meshPlacaForatQuad');
 [numNod,ndim]=size(nodes);
 numElem=size(elem,1);
 numbering=0;
-plotElements(nodes, elem, numbering)
+plotElementsOld(nodes, elem, numbering)
 hold on
 
 %%Select Boundary points
@@ -73,7 +73,7 @@ Q=applyLoadsQuad(nodes,elem,nodLoads,Q,forceLoad);
 
 %% Essential B.C.: 
 % set displacements along the hole to zero
-fixedNodes=[ndim*indCirc'-1; ndim*indCirc'];
+fixedNodes=[ndim*indCirc'-1, ndim*indCirc'];
 freeNodes=setdiff(1:ndim*numNod,fixedNodes);
 u=zeros(ndim*numNod,1); %initialize the solution to u=0
 u(fixedNodes)=0.0;

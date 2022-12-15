@@ -1,15 +1,30 @@
 function [Q]=applyLoadsQuad(nodes,elem,nodLoads,Q, forceLoad)
 %
-% (c) Numerical Factory 2019
+% (c) Numerical Factory 2018
 %
 %------------------------------------------------------------------------
 % Apply a load BC on a boundary of a quadrilateral meshed domain. 
-% The behabiour is very similar to the applyConvecQuad funtion used to
-% apply convection BC.
-%-------------------------------------------------------------------------
+%
+% Input:
+% nodLoads -> List of nodes on the load boundary. They can be
+%          non-connected but it needs: 
+%          i) Each connected component contains at least two nodes 
+%          ii) Only one corner of a quadrilateral is accepted (two edges of the same quadrilateral). 
+%          If an unique quadrilateral is part of the load bondary, we have two call twice 
+%          this function: one time with a corner and then the rest, and sume contributions
+%
+%   *      *           *                *          *              *
+%   |      |           |                |          |              |
+%   |      |     =     |          +     |   o be   |    +         |
+%   *------*           *------*       ..*          *..     *------*
+%
+%
+%  Hint: See the Triang version for the rest of variables and more explanations
+%------------------------------------------------------------------------------
+
 numElem=size(elem,1);
 [numNod,ndim]=size(nodes);
-numCo=size(nodLoads,2);
+numCo=length(nodLoads);
 if (numCo==1) 
     error('applyLoadQuad: It can''t manage a single node'); 
 end
@@ -46,4 +61,4 @@ for k=1:numElem
    end
   end
 end
-end
+
